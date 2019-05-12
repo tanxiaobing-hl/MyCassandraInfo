@@ -22,7 +22,7 @@ session.set_keyspace(settings.DB_KEYSPACE)
 session.default_timeout = 120
 
 
-class tbl_summary(Model):
+class tbl_hello_world(Model):
     task_id = columns.BigInt(partition_key=True, primary_key=True)
     start_time = columns.Text()
     end_time = columns.Text()

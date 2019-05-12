@@ -1,9 +1,9 @@
 # coding=utf-8
 
-import gtsb_cassTblModel as modelMgmt
+import tbl_model as modelMgmt
 
 #------------------------- 如何从 ModelQuerySet 中获取结果 ------------------------------------------
-# 语句 q = modelMgmt.tbl_rawdata_perf.objects(**perfRawDict).limit(None) 中， 返回的结果 q 表示 ModelQuerySet 对象；
+# 语句 q = modelMgmt.tbl_hello_world.objects(**perfRawDict).limit(None) 中， 返回的结果 q 表示 ModelQuerySet 对象；
 # 如何从 q 中获取结果呢？
 # 1. 迭代操作  for ts in q:
 # 2. List索引操作
@@ -19,21 +19,21 @@ import gtsb_cassTblModel as modelMgmt
 
 #------------------------- 常用的查询 -----------------------------
 # 1. 不限制查询结果的条数
-#   q = modelMgmt.tbl_rawdata_perf.objects(**perfRawDict).limit(None)
+#   q = modelMgmt.tbl_hello_world.objects(**perfRawDict).limit(None)
 # 2. 限制查询结果最多为 100 条
-#   q = modelMgmt.tbl_rawdata_perf.objects(**perfRawDict).limit(100)
+#   q = modelMgmt.tbl_hello_world.objects(**perfRawDict).limit(100)
 # 3. 设置超时，单位为秒
-#   q = modelMgmt.tbl_rawdata_perf.objects(**perfRawDict).timeout(120)
+#   q = modelMgmt.tbl_hello_world.objects(**perfRawDict).timeout(120)
 # 4. 选择列
-#   q = modelMgmt.tbl_rawdata_perf.objects(**perfRawDict).only(['mc', 'perftime', 'task_id'])
+#   q = modelMgmt.tbl_hello_world.objects(**perfRawDict).only(['mc', 'perftime', 'task_id'])
 # 5. 排除列，反选
-#   q = modelMgmt.tbl_rawdata_perf.objects(**perfRawDict).defer(['ne_type'])
+#   q = modelMgmt.tbl_hello_world.objects(**perfRawDict).defer(['ne_type'])
 # 6. 设置 consistency
-#   q = modelMgmt.tbl_rawdata_perf.objects(**perfRawDict).consistency(CL.ONE)
+#   q = modelMgmt.tbl_hello_world.objects(**perfRawDict).consistency(CL.ONE)
 # 7. 设置 fetch_size
-#   q = modelMgmt.tbl_rawdata_perf.objects(**perfRawDict).fetch_size(5000)
+#   q = modelMgmt.tbl_hello_world.objects(**perfRawDict).fetch_size(5000)
 # 8. 使能 allow_filtering
-#   q = modelMgmt.tbl_rawdata_perf.objects(**perfRawDict).allow_filtering()
+#   q = modelMgmt.tbl_hello_world.objects(**perfRawDict).allow_filtering()
 
 #--------------- Batch: only for create/update/delete ------------
 # b = BatchQuery()
@@ -43,15 +43,15 @@ import gtsb_cassTblModel as modelMgmt
 # em3 = ExampleModel.batch(b).create(example_type=0, description="3", created_at=now)
 # b.execute()
 
-############## 往表 tbl_rawdata_perf 中写入一行数据 ##############
+############## 往表 tbl_hello_world 中写入一行数据 ##############
 perfRawDict = {"task_id":7171686, "dev_id_str":"", "mc_id":1234567, "moi":"0", "period":15}
 # 先读一下，证明DB中没有这条数据
-q = modelMgmt.tbl_rawdata_perf.objects(**perfRawDict)
+q = modelMgmt.tbl_hello_world.objects(**perfRawDict)
 print("q.count %s" %q.count())
 # 插入这条数据
-modelMgmt.tbl_rawdata_perf(**perfRawDict).save() # modelMgmt.tbl_rawdata_perf.create(**perfRawDict) 也可以
+modelMgmt.tbl_hello_world(**perfRawDict).save() # modelMgmt.tbl_hello_world.create(**perfRawDict) 也可以
 # 再从数据库中这一条数据
-q = modelMgmt.tbl_rawdata_perf.objects(**perfRawDict)
+q = modelMgmt.tbl_hello_world.objects(**perfRawDict)
 print("q.count %s" %q.count())
 for row in q:
     print("ts_len is:%s" %row.ts_len)
@@ -59,7 +59,7 @@ for row in q:
 
 ############## 采用过滤的方式进行查询 ###########
 perfRawDict = {"task_id":612, "dev_id_str":"", "moi":"metfone"}
-q = modelMgmt.tbl_rawdata_perf.objects(**perfRawDict)
+q = modelMgmt.tbl_hello_world.objects(**perfRawDict)
 # 这个操作会超时，因为没有指定完整的PartitionKey，会触发全表扫描, 所以在filter中增加过滤条件
 # print("q.count %s" %q.count())
 q2 = q.filter(mc_id=138418018)
